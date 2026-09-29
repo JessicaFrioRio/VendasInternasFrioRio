@@ -1,0 +1,157 @@
+/* ===== CORES (mude aqui para trocar em todo o site) ===== */
+:root {
+  --azul-escuro: #0a2a4a;
+  --azul: #0e6ba8;
+  --gelo: #eaf4fa;
+  --laranja: #f26b1d;
+  --laranja-hover: #d95a12;
+  --branco: #ffffff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--azul-escuro);
+  background: var(--branco);
+  line-height: 1.5;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
+
+.container { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+/* ===== CABEÇALHO ===== */
+.header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(10, 42, 74, 0.1);
+}
+.header .container {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding-top: 12px; padding-bottom: 12px;
+}
+.marca { display: flex; align-items: center; gap: 12px; }
+.marca img { height: 36px; width: auto; }
+.marca span {
+  display: none; font-size: 14px; font-weight: 600; line-height: 1.2;
+  border-left: 1px solid rgba(10, 42, 74, 0.2); padding-left: 12px;
+}
+.menu { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
+.menu a { padding: 8px; border-radius: 6px; }
+.menu a:hover { color: var(--azul); }
+.menu .botao-menu {
+  background: var(--laranja); color: var(--branco);
+  padding: 8px 16px; border-radius: 999px; font-weight: 600;
+}
+.menu .botao-menu:hover { background: var(--laranja-hover); color: var(--branco); }
+
+/* ===== BOTÃO PRINCIPAL ===== */
+.botao {
+  display: inline-block; background: var(--laranja); color: var(--branco);
+  font-weight: 700; font-size: 16px; padding: 14px 28px; border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); transition: background 0.2s;
+}
+.botao:hover { background: #ff7a2b; }
+.botao-grande { font-size: 18px; padding: 16px 40px; }
+
+/* ===== BANNERS =====
+   Tamanho das imagens: 1920 x 600. Se mudar o tamanho, altere só a linha abaixo. */
+:root { --proporcao-banner: 1920 / 600; }
+
+.secao-banner { padding: 0; }
+.secao-banner + .secao-banner { padding-top: 12px; }
+/* banners ocupam a largura toda da tela (até 1920px) */
+.secao-banner .container { max-width: 1920px; padding: 0; }
+/* Banners da home: mostram a imagem no tamanho natural dela (qualquer altura) */
+.banner-img { display: block; width: 100%; height: auto; }
+/* Banners rotativos: todos com a mesma proporção para não "pular" na troca */
+.slide img { display: block; width: 100%; height: auto; aspect-ratio: var(--proporcao-banner); object-fit: cover; }
+.banner-link { display: block; }
+.chamada-banner { text-align: center; padding: 24px 16px 32px; }
+
+.titulo-pagina { text-align: center; font-size: 26px; font-weight: 800; padding: 28px 16px 4px; }
+
+/* ===== CARROSSEL ===== */
+.carousel { position: relative; overflow: hidden; }
+.carousel-faixa { display: flex; transition: transform 0.7s ease-out; }
+.slide { flex: 0 0 100%; }
+.carousel .slide img { border-radius: 0; }
+
+.seta {
+  display: none; position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+  width: 40px; height: 40px; border: 0; border-radius: 50%;
+  background: rgba(255,255,255,.85); color: var(--azul-escuro); font-size: 22px; cursor: pointer;
+}
+.seta:hover { background: var(--branco); }
+.seta.anterior { left: 12px; }
+.seta.proximo { right: 12px; }
+
+.bolinhas { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; gap: 8px; }
+.bolinhas button {
+  width: 10px; height: 10px; border: 0; border-radius: 999px;
+  background: rgba(255,255,255,.6); box-shadow: 0 0 4px rgba(0,0,0,.4); cursor: pointer; transition: all 0.3s;
+}
+.bolinhas button.ativo { width: 32px; background: var(--branco); }
+
+/* ===== CARDS DE ORIENTAÇÕES ===== */
+.orientacoes { background: var(--gelo); padding: 64px 0; scroll-margin-top: 70px; }
+.orientacoes h2 { font-size: 26px; font-weight: 800; }
+.orientacoes .sub { margin-top: 8px; opacity: .8; }
+.cards { display: grid; gap: 24px; margin-top: 32px; grid-template-columns: 1fr; }
+.card { background: var(--branco); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.card-faixa { height: 8px; }
+.card-corpo { padding: 24px; }
+.card h3 { font-size: 20px; font-weight: 700; }
+.card ul { list-style: none; margin-top: 16px; display: grid; gap: 12px; font-size: 15px; line-height: 1.6; }
+.card li { display: flex; gap: 8px; }
+.card li::before { content: ""; flex: 0 0 6px; height: 6px; margin-top: 10px; border-radius: 50%; background: currentColor; }
+.cor-azul { color: var(--azul); } .cor-laranja { color: var(--laranja); } .cor-escuro { color: var(--azul-escuro); }
+.card-faixa.cor-azul { background: var(--azul); }
+.card-faixa.cor-laranja { background: var(--laranja); }
+.card-faixa.cor-escuro { background: var(--azul-escuro); }
+.card li span { color: var(--azul-escuro); opacity: .85; }
+
+/* ===== BLOCO DO FORMULÁRIO ===== */
+.bloco-formulario { background: var(--gelo); padding: 64px 16px; }
+.bloco-formulario .caixa {
+  max-width: 900px; margin: 0 auto; text-align: center; color: var(--branco);
+  background: linear-gradient(135deg, var(--azul-escuro), var(--azul));
+  border-radius: 24px; padding: 32px 24px; box-shadow: 0 12px 30px rgba(0,0,0,.2);
+}
+.caixa h2 { font-size: 30px; font-weight: 800; }
+.caixa p { max-width: 560px; margin: 16px auto 0; font-size: 18px; color: rgba(255,255,255,.9); }
+.caixa .botao { margin-top: 32px; }
+.caixa .aviso { font-size: 14px; margin-top: 20px; color: rgba(255,255,255,.75); }
+
+/* ===== RODAPÉ ===== */
+.rodape { background: var(--azul-escuro); color: rgba(255,255,255,.8); text-align: center; font-size: 14px; padding: 32px 16px; }
+
+/* ===== TELAS MAIORES (computador) ===== */
+@media (min-width: 768px) {
+  .marca span { display: block; }
+  .menu { gap: 16px; }
+  .seta { display: block; }
+  .orientacoes h2 { font-size: 32px; }
+  .cards { grid-template-columns: repeat(3, 1fr); }
+  .bloco-formulario .caixa { padding: 56px; }
+  .caixa h2 { font-size: 36px; }
+  .titulo-pagina { font-size: 34px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .carousel-faixa, .bolinhas button { transition: none; }
+}
+.titulo-pagina + .secao-banner { padding-bottom: 0; }
+
+/* ============================================================
+   TAMANHO DO BANNER 1 (institucional, o de cima da home)
+   Hoje ele aparece no tamanho natural da imagem.
+   Para mudar, tire as barras e asteriscos de UMA das linhas abaixo:
+   ============================================================ */
+.banner-1 {
+  /* aspect-ratio: 1920 / 284; object-fit: cover; */   /* proporção fixa: troque pelos números do seu banner */
+  /* height: 300px; object-fit: cover; */              /* altura fixa em pixels */
+}
