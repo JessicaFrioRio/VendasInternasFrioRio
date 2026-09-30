@@ -155,3 +155,83 @@ a { color: inherit; text-decoration: none; }
   /* aspect-ratio: 1920 / 284; object-fit: cover; */   /* proporção fixa: troque pelos números do seu banner */
   /* height: 300px; object-fit: cover; */              /* altura fixa em pixels */
 }
+
+/* ============================================================
+   TELA DE CPF
+   ============================================================ */
+.travado main, .travado .rodape, .travado .menu { display: none; }
+.trava { background: var(--gelo); padding: 48px 16px; min-height: 70vh; display: flex; align-items: flex-start; justify-content: center; }
+.trava-caixa { width: 100%; max-width: 440px; background: var(--branco); border-radius: 20px; padding: 32px 24px; box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+.trava-caixa h1 { font-size: 24px; font-weight: 800; line-height: 1.2; }
+.trava-caixa p { margin-top: 8px; opacity: .8; }
+.trava-caixa label { display: block; margin-top: 24px; font-size: 14px; font-weight: 600; }
+.trava-caixa input {
+  width: 100%; margin-top: 6px; padding: 14px 16px; font-size: 18px; letter-spacing: 1px;
+  border: 1px solid rgba(10,42,74,.3); border-radius: 10px; font-family: inherit;
+}
+.trava-caixa input:focus { border-color: var(--azul); outline: 2px solid var(--azul); }
+.trava-erro { margin-top: 16px; padding: 12px 14px; border-radius: 10px; background: #fdecec; color: #b42318; font-size: 14px; opacity: 1 !important; }
+.trava-caixa .botao { width: 100%; margin-top: 24px; border: 0; cursor: pointer; font-family: inherit; }
+.trava-caixa .botao:disabled { opacity: .6; cursor: wait; }
+
+/* ============================================================
+   AVISO + DOWNLOAD DO PDF (efeito vidro / glassmorphism)
+   ============================================================ */
+.aviso-politicas {
+  position: relative; overflow: hidden; scroll-margin-top: 70px; color: var(--branco);
+  padding: 48px 0;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(120, 200, 255, .55), transparent 40%),
+    radial-gradient(circle at 88% 85%, rgba(14, 107, 168, .9), transparent 45%),
+    linear-gradient(135deg, #0a2a4a 0%, #0e5a8f 60%, #1b8ac7 100%);
+}
+.aviso-conteudo { max-width: 860px; text-align: center; }
+.selo {
+  display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.aviso-politicas h2 { margin-top: 16px; font-size: 28px; font-weight: 800; }
+.aviso-politicas p { margin: 16px auto 0; max-width: 720px; font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.92); }
+
+.vidro-download {
+  margin-top: 32px; display: flex; flex-direction: column; align-items: center; gap: 16px;
+  padding: 20px 24px; text-align: center; color: var(--branco);
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.35); border-radius: 24px;
+  backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 8px 32px rgba(3, 20, 40, .35), inset 0 1px 0 rgba(255,255,255,.4);
+  transition: background .25s, transform .25s, box-shadow .25s;
+}
+.vidro-download:hover { background: rgba(255,255,255,.22); transform: translateY(-2px); box-shadow: 0 12px 36px rgba(3,20,40,.45), inset 0 1px 0 rgba(255,255,255,.5); }
+.vidro-icone {
+  flex: none; width: 56px; height: 56px; display: grid; place-items: center; border-radius: 16px;
+  background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4);
+}
+.vidro-texto { display: flex; flex-direction: column; gap: 2px; }
+.vidro-texto strong { font-size: 18px; }
+.vidro-texto small { font-size: 14px; opacity: .85; }
+.vidro-acao {
+  flex: none; font-weight: 700; font-size: 15px; padding: 12px 24px; border-radius: 999px;
+  background: var(--branco); color: var(--azul-escuro);
+}
+
+/* Botão de vidro do formulário */
+.botao-vidro {
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px; margin-top: 32px;
+  padding: 18px 40px; font-size: 18px; font-weight: 700; color: var(--branco);
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.45); border-radius: 20px;
+  backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 8px 28px rgba(3, 20, 40, .35), inset 0 1px 0 rgba(255,255,255,.45);
+  transition: background .25s, transform .25s;
+}
+.botao-vidro:hover { background: rgba(255,255,255,.26); transform: translateY(-2px); }
+
+@media (min-width: 768px) {
+  .aviso-politicas { padding: 64px 0; }
+  .aviso-politicas h2 { font-size: 36px; }
+  .vidro-download { flex-direction: row; text-align: left; gap: 20px; padding: 20px 28px; }
+  .vidro-texto { flex: 1; }
+}

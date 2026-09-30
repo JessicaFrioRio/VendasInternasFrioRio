@@ -6,11 +6,11 @@
   <title>Vendas para colaboradores | FrioRio</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="travado">
   <header class="header">
     <div class="container">
       <a href="index.html" class="marca">
-        <img src="logo.png" alt="FrioRio">
+        <img src="logo-empresa.png" alt="FrioRio">
         <span>Programa de vendas exclusivo<br>para colaboradores FrioRio</span>
       </a>
       <nav class="menu">
@@ -20,6 +20,27 @@
   </header>
 
   <main>
+    <!-- AVISO + DOWNLOAD DO PDF (logo abaixo do cabeçalho)
+         O PDF deve estar na mesma pasta com o nome: politicas-seguranca.pdf -->
+    <section class="aviso-politicas" id="orientacoes">
+      <div class="container aviso-conteudo">
+        <span class="selo">Leitura obrigatória</span>
+        <h2>Políticas e orientações</h2>
+        <p>Leia atentamente as diretrizes do programa antes de fazer o seu pedido. No documento abaixo você encontra as regras sobre elegibilidade, formas de pagamento, prazos de garantia e orientações para retirada nos CDs (Serra, Blumenau e Itupeva).</p>
+
+        <a class="vidro-download" href="politicas-seguranca.pdf" target="_blank" rel="noopener" download>
+          <span class="vidro-icone">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg>
+          </span>
+          <span class="vidro-texto">
+            <strong>Políticas e Orientações</strong>
+            <small>Documento oficial &middot; PDF</small>
+          </span>
+          <span class="vidro-acao">Baixar PDF</span>
+        </a>
+      </div>
+    </section>
+
     <!-- BANNER 1: institucional FrioRio (sem texto, sem link) -->
     <section class="secao-banner">
       <div class="container">
@@ -35,55 +56,6 @@
         </a>
         <div class="chamada-banner">
           <a class="botao botao-grande" href="pedido.html">Fazer pedido</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- CARDS DE NORMAS E ORIENTAÇÕES -->
-    <section class="orientacoes" id="orientacoes">
-      <div class="container">
-        <h2>Políticas e orientações</h2>
-        <p class="sub">Leia antes de fazer o seu pedido.</p>
-
-        <div class="cards">
-          <article class="card" id="politicas">
-            <div class="card-faixa cor-azul"></div>
-            <div class="card-corpo">
-              <h3>Políticas internas</h3>
-              <ul class="cor-azul">
-                <li><span>Elegível: colaborador ativo com contrato vigente (confirme o tempo mínimo com o RH).</span></li>
-                <li><span>Pagamento por desconto em folha ou conforme opção indicada no formulário.</span></li>
-                <li><span>Limite de unidades por colaborador definido em cada campanha.</span></li>
-                <li><span>Revenda dos produtos não é permitida.</span></li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="card" id="garantias">
-            <div class="card-faixa cor-laranja"></div>
-            <div class="card-corpo">
-              <h3>Garantias e suporte</h3>
-              <ul class="cor-laranja">
-                <li><span>A nota fiscal é emitida em nome do colaborador e enviada após a confirmação do pedido.</span></li>
-                <li><span>Garantia de fábrica conforme o fabricante de cada produto.</span></li>
-                <li><span>Guarde a NF: ela é necessária para acionar garantia e pedidos de troca.</span></li>
-                <li><span>Trocas por defeito: fale com o time de Planejamento/Financeiro.</span></li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="card" id="retirada">
-            <div class="card-faixa cor-escuro"></div>
-            <div class="card-corpo">
-              <h3>Retirada nos CDs</h3>
-              <ul class="cor-escuro">
-                <li><span>Retirada nos CDs de Serra, Blumenau e Itupeva.</span></li>
-                <li><span>Escolha o CD no formulário; a retirada é feita mediante aviso de liberação.</span></li>
-                <li><span>Leve documento com foto e a NF.</span></li>
-                <li><span>Frete para outras localidades: consulte condições e prazo com o time responsável.</span></li>
-              </ul>
-            </div>
-          </article>
         </div>
       </div>
     </section>
