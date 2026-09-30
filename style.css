@@ -235,3 +235,5 @@ a { color: inherit; text-decoration: none; }
   .vidro-download { flex-direction: row; text-align: left; gap: 20px; padding: 20px 28px; }
   .vidro-texto { flex: 1; }
 }
+.botao { background: #0e6ba8; }
+.botao:hover { background: #0a5484; }
