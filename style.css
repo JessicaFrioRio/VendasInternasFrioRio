@@ -158,7 +158,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ============================================================
-   TELA DE CPF
+   TELA DE ACESSO
    ============================================================ */
 .travado main, .travado .rodape, .travado .menu { display: none; }
 .trava { background: var(--gelo); padding: 48px 16px; min-height: 70vh; display: flex; align-items: flex-start; justify-content: center; }
