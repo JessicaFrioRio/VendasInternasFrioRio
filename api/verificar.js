@@ -1,4 +1,4 @@
-// Confere se o CPF está na lista. A lista nunca vai para o navegador.
+// Confere o código de acesso na lista privada do servidor.
 const security = require('../lib/security');
 
 
@@ -16,12 +16,13 @@ module.exports = async (req, res) => {
     if (Buffer.byteLength(body)>1024) return res.status(413).json({ok:false});
     try { body = JSON.parse(body); } catch (e) { return res.status(400).json({ok:false}); }
   }
-  if (!body || Array.isArray(body) || typeof body.cpf !== 'string' || !/^(?:\d{11}|\d{3}\.\d{3}\.\d{3}-\d{2})$/.test(body.cpf)) return res.status(400).json({ok:false});
-  const cpf = body.cpf.replace(/\D/g, '');
+  if (!body || Array.isArray(body) || typeof body.codigo !== 'string') return res.status(400).json({ok:false});
+  const codigo = security.normalizeAccessCode(body.codigo);
+  if (!security.validAccessCode(codigo)) return res.status(400).json({ok:false});
 
   // pequena espera para dificultar tentativas em sequência
 
-  if (security.validCpf(cpf) && security.allowed(cpf)) {
+  if (security.allowedCode(codigo)) {
     const session=await security.createSession();
     res.setHeader('Set-Cookie',security.cookie(session.token,security.TTL));
     return res.status(200).json({ ok: true, expiresAt: session.expiresAt });

@@ -2,7 +2,7 @@
   'use strict';
   try{sessionStorage.removeItem('friorio_cpf');}catch{}
   const gate=document.createElement('section');gate.className='trava';
-  gate.innerHTML='<div class="trava-caixa"><h1>Acesso exclusivo para colaboradores</h1><p>Digite seu CPF para verificar a elegibilidade.</p><label for="cpf">CPF</label><input id="cpf" type="text" inputmode="numeric" maxlength="14" autocomplete="off" placeholder="000.000.000-00"><p role="alert" hidden></p><button class="botao" type="button">Entrar</button></div>';
+  gate.innerHTML='<div class="trava-caixa"><h1>Acesso exclusivo para colaboradores</h1><p>Digite seu código de acesso.</p><label for="codigo">Código de acesso</label><input id="codigo" type="text" inputmode="text" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Ex.: A1B2C3D"><p role="alert" hidden></p><button class="botao" type="button">Entrar</button></div>';
   document.querySelector('header').after(gate);
   const input=gate.querySelector('input'),error=gate.querySelector('[role=alert]'),button=gate.querySelector('button');
   let busy=false,timer;
@@ -12,9 +12,9 @@
   function show(text){error.textContent=text;error.hidden=false;}
   async function call(url,options){const r=await fetch(url,{credentials:'same-origin',cache:'no-store',...options});const data=await r.json();return {r,data};}
   async function check(){try{const {r,data}=await call('/api/sessao');if(r.ok&&data.ok)release(data);else lock();}catch{lock();}}
-  async function enter(){if(busy)return;error.hidden=true;const cpf=input.value.replace(/\D/g,'');if(cpf.length!==11)return show('Confira os 11 dígitos do CPF.');busy=true;button.disabled=true;button.textContent='Verificando...';try{const {r,data}=await call('/api/verificar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cpf})});if(r.ok&&data.ok)release(data);else show(r.status===429?'Muitas tentativas. Aguarde 15 minutos.':r.status===503?'Acesso temporariamente indisponível.':'Não foi possível autorizar o acesso. Confira os dados.');}catch{show('Não foi possível conectar. Tente novamente.');}finally{busy=false;button.disabled=false;button.textContent='Entrar';}}
+  async function enter(){if(busy)return;error.hidden=true;const codigo=input.value.trim().toUpperCase();if(!/^[A-Z0-9]{7}$/.test(codigo))return show('Digite o código de 7 caracteres.');busy=true;button.disabled=true;button.textContent='Verificando...';try{const {r,data}=await call('/api/verificar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo})});if(r.ok&&data.ok)release(data);else show(r.status===429?'Muitas tentativas. Aguarde 15 minutos.':r.status===503?'Acesso temporariamente indisponível.':'Código não autorizado. Confira e tente novamente.');}catch{show('Não foi possível conectar. Tente novamente.');}finally{busy=false;button.disabled=false;button.textContent='Entrar';}}
   button.addEventListener('click',enter);input.addEventListener('keydown',e=>{if(e.key==='Enter')enter();});
-  input.addEventListener('input',()=>{const d=input.value.replace(/\D/g,'').slice(0,11);input.value=d.replace(/^(\d{3})(\d)/,'$1.$2').replace(/^(\d{3})\.(\d{3})(\d)/,'$1.$2.$3').replace(/\.(\d{3})(\d)/,'.$1-$2');});
+  input.addEventListener('input',()=>{input.value=input.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,7);});
   logout.addEventListener('click',async()=>{logout.disabled=true;try{const {r}=await call('/api/sair',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});if(r.ok)lock();else{lock();show('Não foi possível encerrar a sessão no servidor. Tente novamente.');logout.hidden=false;}}catch{lock();show('Não foi possível encerrar a sessão no servidor. Tente novamente.');logout.hidden=false;}finally{logout.disabled=false;}});
   window.addEventListener('pageshow',check);document.addEventListener('visibilitychange',()=>{if(!document.hidden)check();});check();
 })();
