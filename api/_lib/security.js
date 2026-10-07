@@ -1,0 +1,26 @@
+const {randomBytes,createHash} = require('node:crypto');
+const TTL=1800, NAME='__Host-friorio_session';
+
+function headers(res){res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');}
+function normalizeAccessCode(value){return typeof value==='string'?value.trim().toUpperCase():'';}
+function validAccessCode(value){return /^[A-Z0-9]{7}$/.test(value);}
+function allowedCode(code){return (process.env.AUTHORIZED_CODES||'').split(/[\s,;]+/).map(normalizeAccessCode).filter(validAccessCode).includes(code);}
+function redisConfig(){return {url:process.env.UPSTASH_REDIS_REST_URL||process.env.KV_REST_API_URL,token:process.env.UPSTASH_REDIS_REST_TOKEN||process.env.KV_REST_API_TOKEN};}
+function configured(){const config=redisConfig();return !!(process.env.AUTHORIZED_CODES&&config.url&&config.token);}
+async function redis(command){const config=redisConfig();const url=new URL(config.url);if(url.protocol!=='https:')throw new Error('Invalid configuration');const r=await fetch(url,{method:'POST',headers:{Authorization:'Bearer '+config.token,'Content-Type':'application/json'},body:JSON.stringify(command),signal:AbortSignal.timeout(5000)});if(!r.ok)throw new Error('Storage unavailable');const data=await r.json();if(data.error)throw new Error('Storage error');return data.result;}
+function hash(value){return createHash('sha256').update(value).digest('hex');}
+function headerValue(req,name){
+  const headers=req&&req.headers;
+  if(headers&&typeof headers.get==='function')return headers.get(name)||'';
+  const value=headers&&(headers[name]??headers[name.toLowerCase()]);
+  return Array.isArray(value)?(value[0]||''):(value||'');
+}
+async function limit(req){const ip=process.env.VERCEL?headerValue(req,'x-vercel-forwarded-for'):req.socket?.remoteAddress;if(typeof ip!=='string'||!ip)throw new Error('Client address unavailable');const count=await redis(['EVAL',"local n=redis.call('INCR',KEYS[1]); if n==1 then redis.call('EXPIRE',KEYS[1],ARGV[1]) end; return n",1,'friorio:attempts:'+hash(ip),900]);return Number(count)<=10;}
+function cookie(token,age){return NAME+'='+token+'; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age='+age;}
+function sameOrigin(req){const origin=headerValue(req,'origin');if(!origin)return headerValue(req,'sec-fetch-site')==='same-origin';return typeof process.env.SITE_ORIGIN==='string'&&origin===process.env.SITE_ORIGIN;}
+function tokenFrom(req){const cookieHeader=headerValue(req,'cookie');const raw=cookieHeader.split(';').map(value=>value.trim()).find(value=>value.startsWith(NAME+'='));const token=raw?.slice(NAME.length+1);return /^[a-f0-9]{64}$/.test(token||'')?token:null;}
+async function createSession(){const token=randomBytes(32).toString('hex');const expiresAt=Date.now()+TTL*1000;await redis(['SET','friorio:session:'+hash(token),String(expiresAt),'EX',TTL]);return {token,expiresAt};}
+async function session(req){const token=tokenFrom(req);if(!token)return null;const expiresAt=Number(await redis(['GET','friorio:session:'+hash(token)]));return expiresAt>Date.now()?{token,expiresAt}:null;}
+async function revoke(req){const token=tokenFrom(req);if(token)await redis(['DEL','friorio:session:'+hash(token)]);}
+
+module.exports={TTL,headers,normalizeAccessCode,validAccessCode,allowedCode,configured,limit,cookie,sameOrigin,createSession,session,revoke,tokenFrom};
