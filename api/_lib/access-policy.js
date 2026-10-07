@@ -30,10 +30,16 @@ function decision(pathname,authenticated){
   if(!isProtectedPath(normalized)||authenticated)return 'next';
   return 'not-found';
 }
+function preAuthDecision(pathname){
+  const action=decision(pathname,false);
+  if(action==='next')return 'next';
+  if(action==='not-found'&&!isProtectedPath(pathname))return 'not-found';
+  return 'check-session';
+}
 function loginLocation(pathname){
   const page=canonicalPage(pathname);
   if(!PROTECTED_PAGES.includes(page))return '/';
   return '/?next='+encodeURIComponent(page);
 }
 
-module.exports={PROTECTED_PAGES,PROTECTED_PAGE_ALIASES,PROTECTED_ASSETS,PRIVATE_FILES,PRIVATE_PREFIXES,isPrivatePath,isProtectedPath,decision,loginLocation};
+module.exports={PROTECTED_PAGES,PROTECTED_PAGE_ALIASES,PROTECTED_ASSETS,PRIVATE_FILES,PRIVATE_PREFIXES,isPrivatePath,isProtectedPath,decision,preAuthDecision,loginLocation};

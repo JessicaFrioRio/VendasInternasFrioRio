@@ -2,16 +2,16 @@ import { next } from '@vercel/functions';
 import security from './api/_lib/security.js';
 import policy from './api/_lib/access-policy.js';
 
-const {decision,loginLocation}=policy;
+const {decision,preAuthDecision,loginLocation}=policy;
 const privateHeaders={'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'};
 
 function notFound(){return new Response('Not found',{status:404,headers:privateHeaders});}
 
 export default async function proxy(request){
   const pathname=new URL(request.url).pathname;
-  const withoutSession=decision(pathname,false);
-  if(withoutSession==='not-found')return notFound();
-  if(withoutSession==='next')return next();
+  const beforeSession=preAuthDecision(pathname);
+  if(beforeSession==='not-found')return notFound();
+  if(beforeSession==='next')return next();
 
   try{
     const authenticated=Boolean(await security.session(request));

@@ -24,6 +24,9 @@ async function call(handler,r){const res={code:200,headers:{},setHeader(k,v){thi
   const loginPage=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');assert(!loginPage.includes('Políticas e orientações'));assert(!loginPage.includes('banner1.png'));
   assert.equal(fs.existsSync(path.join(__dirname,'..','lib','security.js')),false);
   for(const pathname of [...policy.PROTECTED_PAGES,...policy.PROTECTED_ASSETS]){assert.equal(policy.decision(pathname,false),policy.PROTECTED_PAGES.includes(pathname)?'login':'not-found');assert.equal(policy.decision(pathname,true),'next');}
+  for(const pathname of [...policy.PROTECTED_PAGES,...policy.PROTECTED_ASSETS,Object.keys(policy.PROTECTED_PAGE_ALIASES)[0]])assert.equal(policy.preAuthDecision(pathname),'check-session');
+  for(const pathname of [...policy.PRIVATE_FILES,'/api/_lib/security.js','/tests/security.cjs','/pedido.html/extra'])assert.equal(policy.preAuthDecision(pathname),'not-found');
+  assert.equal(policy.preAuthDecision('/style.css'),'next');
   for(const [alias,page] of Object.entries(policy.PROTECTED_PAGE_ALIASES)){assert.equal(policy.decision(alias,false),'login');assert.equal(policy.loginLocation(alias),'/?next='+encodeURIComponent(page));}
   assert.equal(policy.decision('/pedido.html/',false),'login');assert.equal(policy.decision('/pedido%2Ehtml',false),'login');assert.equal(policy.decision('/pedido.html/extra',false),'not-found');
   assert.equal(policy.decision('/api/_lib/security.js',false),'not-found');assert.equal(policy.decision('/tests/security.cjs',false),'not-found');
