@@ -1,5 +1,5 @@
 // Confere o código de acesso na lista privada do servidor.
-const security = require('../lib/security');
+const security = require('./_lib/security');
 
 
 module.exports = async (req, res) => {
