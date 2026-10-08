@@ -13,10 +13,14 @@ O acesso usa os códigos da planilha `Códigos Site Vendas Internas.xlsx`. Os c�
 
 Sem as variáveis, novos logins ficam indisponíveis. Sessões usam token aleatório em cookie HttpOnly/Secure/SameSite, expiram em 30 minutos e são revogadas no servidor pelo botão Sair. Cada acesso a uma página ou banner protegido valida a sessão no Redis e usa `Cache-Control: private, no-store`; isso acrescenta uma leitura no Redis e uma execução do Routing Middleware por arquivo protegido solicitado. O helper e os arquivos de testes/configuração são negados como rotas públicas.
 
-## Conteúdo pendente
+## Políticas do programa
 
-O PDF não veio no material. O download quebrado foi substituído por aviso. Incluir o documento oficial e restaurar o link antes da campanha. Ajustar também o texto que descreve o documento. Nunca armazenar códigos de acesso no front-end, no repositório ou em logs.
+- `regras-programa-vendas.pdf` é o guia do colaborador fornecido pela empresa. Ele é servido somente após validação da sessão.
+- `privacidade.html` apresenta a Política de Privacidade fornecida pela empresa, também protegida pelo login do portal.
+- Os dois documentos são acessados pela seção “Políticas e orientações” da página do programa. Ao substituir qualquer política, confira a versão e a data de atualização com a área responsável antes de publicar.
+
+Nunca armazenar códigos de acesso no front-end, no repositório ou em logs.
 
 ## Validação e publicação
 
-Executar `node tests/security.cjs`. Os testes usam Redis simulado, não acessam produção. Antes de liberar, testar integração real na Vercel: o middleware deve redirecionar `/programa.html` e `/pedido.html` sem sessão, retornar 404 para os banners e os caminhos internos, e entregar tudo com sessão válida; também conferir cookies HTTPS, APIs, Redis, contador, expiração, logout e Microsoft Forms. Testar responsividade e carrossel visualmente. As alterações não foram publicadas automaticamente.
+Executar `node tests/security.cjs`. Os testes usam Redis simulado, não acessam produção. Antes de liberar, testar integração real na Vercel: o middleware deve redirecionar as páginas protegidas sem sessão, retornar 404 para os banners, o PDF e os caminhos internos, e entregar tudo com sessão válida; também conferir cookies HTTPS, APIs, Redis, contador, expiração, logout e Microsoft Forms. Testar responsividade e carrossel visualmente.

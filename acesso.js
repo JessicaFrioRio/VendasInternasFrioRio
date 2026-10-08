@@ -3,7 +3,7 @@
   try{sessionStorage.removeItem('friorio_cpf');}catch{}
 
   const loginPage=location.pathname==='/'||location.pathname==='/index.html';
-  const destinations=new Set(['/programa.html','/pedido.html']);
+  const destinations=new Set(['/programa.html','/pedido.html','/privacidade.html']);
   function destination(){
     const requested=new URLSearchParams(location.search).get('next');
     return destinations.has(requested)?requested:'/programa.html';
