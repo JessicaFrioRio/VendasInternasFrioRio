@@ -45,7 +45,7 @@ http.createServer(async(req,res)=>{
   if(policy.isPrivatePath(pathname)){res.statusCode=404;res.end('Not found');return;}
   const aliases={'/':'index.html','/programa':'programa.html','/pedido':'pedido.html'};
   const name=aliases[pathname]||pathname.slice(1);
-  if(!['index.html','programa.html','pedido.html','acesso.js','style.css','logo.png','banner1.png','banner2.png','banner3.png','banner4.png'].includes(name)){res.statusCode=404;res.end('Not found');return;}
+  if(!['index.html','programa.html','pedido.html','privacidade.html','regras-programa-vendas.pdf','acesso.js','style.css','logo.png','banner1.png','banner2.png','banner3.png','banner4.png'].includes(name)){res.statusCode=404;res.end('Not found');return;}
   if(policy.isProtectedPath(pathname)){
     req.headers.cookie=(req.headers.cookie||'').replaceAll('friorio_preview=','__Host-friorio_session=');
     try{
@@ -58,7 +58,7 @@ http.createServer(async(req,res)=>{
     }catch{res.statusCode=503;res.end('Temporarily unavailable');return;}
   }
   res.setHeader('Cache-Control','no-store');
-  res.setHeader('Content-Type',name.endsWith('.html')?'text/html; charset=utf-8':name.endsWith('.js')?'application/javascript':name.endsWith('.css')?'text/css':'image/png');
+  res.setHeader('Content-Type',name.endsWith('.html')?'text/html; charset=utf-8':name.endsWith('.js')?'application/javascript':name.endsWith('.css')?'text/css':name.endsWith('.pdf')?'application/pdf':'image/png');
   let content=fs.readFileSync(path.join(root,name));
   if(name.endsWith('.html'))content=content.toString().replace('<body class="travado">','<body class="travado"><div style="background:#fff3cd;color:#4a3500;padding:10px;text-align:center">Prévia local • Nenhum pedido real</div>');
   res.end(content);

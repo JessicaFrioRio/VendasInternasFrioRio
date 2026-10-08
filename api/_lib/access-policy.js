@@ -1,6 +1,6 @@
-const PROTECTED_PAGES=['/programa.html','/pedido.html'];
+const PROTECTED_PAGES=['/programa.html','/pedido.html','/privacidade.html'];
 const PROTECTED_PAGE_ALIASES={'/programa':'/programa.html','/pedido':'/pedido.html'};
-const PROTECTED_ASSETS=['/banner1.png','/banner2.png','/banner3.png','/banner4.png'];
+const PROTECTED_ASSETS=['/banner1.png','/banner2.png','/banner3.png','/banner4.png','/regras-programa-vendas.pdf'];
 const PRIVATE_FILES=['/proxy.js','/vercel.json','/package.json','/LEIA-ME.md','/preview.cjs','/.env.example','/.gitignore'];
 const PRIVATE_PREFIXES=['/lib/','/api/_lib/','/tests/'];
 
