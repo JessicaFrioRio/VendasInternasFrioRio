@@ -20,10 +20,15 @@ async function call(handler,r){const res={code:200,headers:{},setHeader(k,v){thi
   attempts=0;const exp=await call(login,req({codigo:'TEST123'}));for(const key of db.keys())db.set(key,String(Date.now()-1));assert.equal((await call(status,req(undefined,'GET',exp.headers['set-cookie']))).code,401);
   attempts=10;assert.equal((await call(login,req({codigo:'TEST123'}))).code,429);
   fail=true;attempts=0;assert.equal((await call(login,req({codigo:'TEST123'}))).code,503);
-  for(const name of ['index.html','programa.html','pedido.html']){const html=fs.readFileSync(path.join(__dirname,'..',name),'utf8');assert(html.includes('acesso.js'));assert(html.includes('logo.png'));}
+  for(const name of ['index.html','programa.html','pedido.html','privacidade.html']){const html=fs.readFileSync(path.join(__dirname,'..',name),'utf8');assert(html.includes('acesso.js'));assert(html.includes('logo.png'));}
+  const programPage=fs.readFileSync(path.join(__dirname,'..','programa.html'),'utf8');assert(programPage.includes('/regras-programa-vendas.pdf'));assert(programPage.includes('/privacidade.html'));assert(!programPage.includes('Documento em atualização'));
+  const privacyPage=fs.readFileSync(path.join(__dirname,'..','privacidade.html'),'utf8');for(const section of ['1. Dados coletados','2. Finalidade do uso dos dados','3. Base legal','4. Compartilhamento de dados','5. Armazenamento e segurança','6. Direitos do titular','7. Atualizações desta política'])assert(privacyPage.includes(section));
+  assert(fs.readFileSync(path.join(__dirname,'..','regras-programa-vendas.pdf')).subarray(0,5).equals(Buffer.from('%PDF-')));
+  assert(fs.readFileSync(path.join(__dirname,'..','acesso.js'),'utf8').includes("'/privacidade.html'"));
   const loginPage=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');assert(!loginPage.includes('Políticas e orientações'));assert(!loginPage.includes('banner1.png'));
   assert.equal(fs.existsSync(path.join(__dirname,'..','lib','security.js')),false);
   for(const pathname of [...policy.PROTECTED_PAGES,...policy.PROTECTED_ASSETS]){assert.equal(policy.decision(pathname,false),policy.PROTECTED_PAGES.includes(pathname)?'login':'not-found');assert.equal(policy.decision(pathname,true),'next');}
+  assert(policy.PROTECTED_PAGES.includes('/privacidade.html'));assert(policy.PROTECTED_ASSETS.includes('/regras-programa-vendas.pdf'));
   for(const pathname of [...policy.PROTECTED_PAGES,...policy.PROTECTED_ASSETS,Object.keys(policy.PROTECTED_PAGE_ALIASES)[0]])assert.equal(policy.preAuthDecision(pathname),'check-session');
   for(const pathname of [...policy.PRIVATE_FILES,'/api/_lib/security.js','/tests/security.cjs','/pedido.html/extra'])assert.equal(policy.preAuthDecision(pathname),'not-found');
   assert.equal(policy.preAuthDecision('/style.css'),'next');
